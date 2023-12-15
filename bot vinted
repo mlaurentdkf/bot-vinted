@@ -1,0 +1,33 @@
+import time
+
+
+def like_jordan_4():
+    """Met en favoris toute les paires de chaussures ayant le nom jordan 4, à moins de 100€
+
+    Args:
+        price_min: Le prix minimum (en euros)
+    """
+
+    url = "https://api.vinted.fr/v2/items"
+    headers = {
+        "Authorization": "Bearer YOUR_ACCESS_TOKEN",
+    }
+    data = {
+        "query": "jordan 4",
+        "price_min": price_min,
+    }
+    response = requests.get(url, headers=headers, params=data)
+    if response.status_code == 200:
+        items = response.json()["items"]
+        for item in items:
+            requests.post(
+                f"https://api.vinted.fr/v2/items/{item['id']}/like", headers=headers
+            )
+    else:
+        print("Erreur lors de la requête : code %d" % response.status_code)
+
+
+if __name__ == "__main__":
+    while True:
+        like_jordan_4()
+        time.sleep(600)
